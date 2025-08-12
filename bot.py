@@ -1,9 +1,7 @@
-# bot.py
 import asyncio
 from telegram import Update
 from telegram.ext import Application, CommandHandler, ContextTypes
 
-# Importamos nossas configurações e funções do banco de dados
 import config
 import database
 
@@ -19,9 +17,6 @@ async def start(update: Update, context: ContextTypes.DEFAULT_TYPE):
 async def monitorar(update: Update, context: ContextTypes.DEFAULT_TYPE):
     """Salva um novo alerta solicitado pelo usuário."""
     try:
-        # Pega a mensagem do usuário e divide em partes.
-        # Ex: "/monitorar whey https://t.me/xetdaspromocoes"
-        # se torna: ["/monitorar", "whey", "https://t.me/xetdaspromocoes"]
         partes = update.message.text.split()
         if len(partes) != 3:
             await update.message.reply_text(
@@ -34,7 +29,6 @@ async def monitorar(update: Update, context: ContextTypes.DEFAULT_TYPE):
         channel_link = partes[2]
         user_id = update.message.from_user.id
 
-        # Adiciona o alerta no banco de dados usando nossa função
         database.adicionar_alerta(user_id, keyword, channel_link)
 
         await update.message.reply_text(
@@ -50,14 +44,11 @@ def main():
     """Função principal que inicia o bot."""
     print("Iniciando o bot...")
     
-    # Cria a aplicação do bot usando o token
     application = Application.builder().token(config.BOT_TOKEN).build()
 
-    # Adiciona os "escutadores" de comandos
     application.add_handler(CommandHandler("start", start))
     application.add_handler(CommandHandler("monitorar", monitorar))
 
-    # Inicia o bot para ele ficar online recebendo mensagens
     print("Bot iniciado e aguardando comandos...")
     application.run_polling()
 

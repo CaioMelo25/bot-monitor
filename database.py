@@ -1,4 +1,3 @@
-# database.py
 import sqlite3
 
 DB_NAME = "alertas.db"
@@ -7,7 +6,6 @@ def inicializar_db():
     """Cria a tabela de alertas no banco de dados se ela não existir."""
     conexao = sqlite3.connect(DB_NAME)
     cursor = conexao.cursor()
-    # Criamos a tabela com colunas para ID do usuário, palavra-chave e o canal a ser monitorado
     cursor.execute("""
     CREATE TABLE IF NOT EXISTS alertas (
         id INTEGER PRIMARY KEY AUTOINCREMENT,
@@ -40,6 +38,4 @@ def obter_todos_alertas():
     conexao.close()
     return alertas
 
-# Esta linha garante que a função para criar o banco de dados seja chamada
-# assim que o programa começar a usar este arquivo.
 inicializar_db()
